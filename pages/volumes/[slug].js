@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { volumes } from "../../lib/data";
+import { getPrevious, getNext } from "../../lib/utils";
 import { useRouter } from "next/router";
 
 export default function GenericVolumePage() {
@@ -13,6 +14,13 @@ export default function GenericVolumePage() {
   }
 
   const { title, cover, books, description } = volume;
+  console.log("volume:", volume);
+
+  const previousVolume = getPrevious(volumes, volume);
+  console.log("previousVolume:", previousVolume);
+
+  const nextVolume = getNext(volumes, volume);
+  console.log("nextVolume:", nextVolume);
 
   return (
     <>
@@ -33,21 +41,20 @@ export default function GenericVolumePage() {
         width={287}
         height={466}
       />
+      {previousVolume ? (
+        <div>
+          <Link href={`/volumes/${previousVolume.slug}`}>
+            ← Previous Volume: {previousVolume.title}
+          </Link>
+        </div>
+      ) : null}
+      {nextVolume ? (
+        <div>
+          <Link href={`/volumes/${nextVolume.slug}`}>
+            → Next Volume: {nextVolume.title}
+          </Link>
+        </div>
+      ) : null}
     </>
   );
 }
-
-// {previousVolume ? (
-//   <div>
-//     <Link href={`/volumes/${previousVolume.slug}`}>
-//       ← Previous Volume: {previousVolume.title}
-//     </Link>
-//   </div>
-// ) : null}
-// {nextVolume ? (
-//   <div>
-//     <Link href={`/volumes/${nextVolume.slug}`}>
-//       → Next Volume: {nextVolume.title}
-//     </Link>
-//   </div>
-// ) : null}
