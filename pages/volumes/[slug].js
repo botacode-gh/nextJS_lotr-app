@@ -1,40 +1,53 @@
 import Link from "next/link";
 import Image from "next/image";
+import { volumes } from "../../lib/data";
 import { useRouter } from "next/router";
 
-export default function GeneralVolumePage() {
+export default function GenericVolumePage() {
   const router = useRouter();
   const { slug } = router.query;
-  const { title, cover, books, description } = volumes.find(
-    (volume) => volume.slug === slug
-  );
-  console.log("slug:", slug);
+  const volume = volumes.find((volume) => volume.slug === slug);
+
+  if (!volume) {
+    return null;
+  }
+
+  const { title, cover, books, description } = volume;
+
   return (
     <>
-      <nav>
-        <Link href="/volumes">← All Volumes</Link>
-      </nav>
-      <section>
-        <h1>{title}</h1>
-        <p>{description}</p>
-      </section>
-
-      <section>
-        <h2>Books</h2>
-        <ul>
-          {volumes.map(({ ordinal, title }) => (
-            <li key={ordinal}>
-              {ordinal}: {title}
-            </li>
-          ))}
-        </ul>
-        <Image
-          src={cover}
-          alt={`Cover for ${volume1.title}`}
-          width={287}
-          height={466}
-        />
-      </section>
+      <Link href="/volumes">← All Volumes</Link>
+      <h1>{title}</h1>
+      <p>{description}</p>
+      <h2>Books</h2>
+      <ul>
+        {books.map(({ ordinal, title }) => (
+          <li key={title}>
+            {ordinal}: <cite>{title}</cite>
+          </li>
+        ))}
+      </ul>{" "}
+      <Image
+        src={cover}
+        alt={`Book cover of ${title}`}
+        width={287}
+        height={466}
+      />
     </>
   );
 }
+
+// {previousVolume ? (
+//   <div>
+//     <Link href={`/volumes/${previousVolume.slug}`}>
+//       ← Previous Volume: {previousVolume.title}
+//     </Link>
+//   </div>
+// ) : null}
+// {nextVolume ? (
+//   <div>
+//     <Link href={`/volumes/${nextVolume.slug}`}>
+//       → Next Volume: {nextVolume.title}
+//     </Link>
+//   </div>
+// ) : null}
