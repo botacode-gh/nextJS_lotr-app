@@ -3,6 +3,7 @@ import Image from "next/image";
 import { volumes } from "../../lib/data";
 import { getPrevious, getNext } from "../../lib/utils";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function GenericVolumePage() {
   const router = useRouter();
@@ -24,10 +25,13 @@ export default function GenericVolumePage() {
 
   return (
     <>
-      <Link href="/volumes">← All Volumes</Link>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <Link href="/volumes">&#8610; Return to All Volumes</Link>
       <h1>{title}</h1>
       <p>{description}</p>
-      <h2>Books</h2>
+      <h2>Within this Volume you&apos;ll find the books</h2>
       <ul>
         {books.map(({ ordinal, title }) => (
           <li key={title}>
@@ -44,14 +48,14 @@ export default function GenericVolumePage() {
       {previousVolume ? (
         <div>
           <Link href={`/volumes/${previousVolume.slug}`}>
-            ← Previous Volume: {previousVolume.title}
+            &#8610; Preceding Volume: <strong>{previousVolume.title}</strong>
           </Link>
         </div>
       ) : null}
       {nextVolume ? (
         <div>
           <Link href={`/volumes/${nextVolume.slug}`}>
-            → Next Volume: {nextVolume.title}
+            &#8611; Succeeding Volume: <strong>{nextVolume.title}</strong>
           </Link>
         </div>
       ) : null}
